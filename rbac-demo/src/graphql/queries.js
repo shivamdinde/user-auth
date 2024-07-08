@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_USER_PROFILE = gql`
+
   query GetUserProfile($token: String) {
     getUserProfile(token: $token) {
       id
@@ -9,9 +10,8 @@ export const GET_USER_PROFILE = gql`
       password
       role
       token
-    }
-  }
-`;
+}
+}`;
 export const GET_ALL_USERS = gql`
   query GetAllUsers {
     getAllUsers {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_USER_PROFILE } from "../graphql/queries";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -42,6 +42,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   // Query to fetch user profile
+  
   const { loading, error, data } = useQuery(GET_USER_PROFILE, {
     variables: {
       token: localStorage.getItem("token") || "", // Retrieve token from storage
@@ -49,6 +50,16 @@ const Dashboard = () => {
     fetchPolicy: "network-only", // Ensure latest data is fetched
   });
 
+
+  const handleButtonClick = () => {
+    try{
+      navigate('/admin');
+    }catch(e){
+      console.error(e);
+    }
+  }
+
+  // Logout
   const handleLogout = () => {
     try {
       localStorage.removeItem("token");
@@ -57,6 +68,8 @@ const Dashboard = () => {
       console.error("Error logging out:", error);
     }
   };
+
+
 
   if (loading) return <CircularProgress />; // Show loading indicator
 
@@ -69,16 +82,9 @@ const Dashboard = () => {
     return <Typography>User profile not found</Typography>;
   }
 
-  // Check user role here
-  // For example, if role === "user", render user dashboard
-  // Ensure to replace "user" with your actual role field from server response
-  // if (data.getUserProfile.role !== "user") {
-  //   // Redirect or show error for unauthorized access
-  //   navigate("/"); // Redirect to home or login page
-  //   return null; // Render nothing or a loading/error message
-  // }
+  
 
-  const isAdmin = data.getUserProfile.role === "admin";
+  const isAdmin = (data.getUserProfile.role === "ADMIN" || data.getUserProfile.role === "SUPER_ADMIN");
   return (
     <Container style={styles.root} component="main" maxWidth="md">
       {!isAdmin && (
@@ -118,6 +124,7 @@ const Dashboard = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
         <Button
           style={styles.logoutButton}
           variant="contained"
@@ -138,6 +145,7 @@ const Dashboard = () => {
         )}
       </Paper>
     </Container>
+
   );
 };
 

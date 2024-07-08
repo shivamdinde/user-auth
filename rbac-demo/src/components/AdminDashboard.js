@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
+
+import { UPDATE_USER_DETAILS } from "../graphql/mutations";
+import { GET_ALL_USERS } from "../graphql/queries";
+// =======
 import { UPDATE_USER_DETAILS } from "../graphql/mutations";
 import { GET_ALL_USERS } from "../graphql/queries";
 import { useNavigate } from "react-router-dom";
+// >>>>>>> main
 import {
   Container,
   Typography,
@@ -58,6 +63,16 @@ const styles = {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+<
+  useEffect(() => {
+    // console.log(localStorage.getItem('role'))
+    if (localStorage.getItem('role') !== "ADMIN" && localStorage.getItem('role') !== "SUPER_ADMIN") {
+      navigate('/dashboard')
+    }
+    // console.log(userRole)
+  });
+  const [selectedRole, setSelectedRole] = useState("");
+
   const [selectedRoles, setSelectedRoles] = useState({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -103,6 +118,18 @@ const AdminDashboard = () => {
   if (loading) return <CircularProgress />;
   if (error) return <Typography>Error: {error.message}</Typography>;
 
+
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <Container style={styles.root}>
       <Typography variant="h4" gutterBottom>
@@ -120,6 +147,8 @@ const AdminDashboard = () => {
           </TableHead>
           <TableBody>
             {data.getAllUsers.map((user) => (
+
+             (user.role !== "SUPER_ADMIN") ? (
               <TableRow key={user.id}>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>{user.email}</TableCell>
@@ -134,8 +163,8 @@ const AdminDashboard = () => {
                       }
                       variant="standard"
                     >
-                      <MenuItem value="user">User</MenuItem>
-                      <MenuItem value="admin">Admin</MenuItem>
+                      <MenuItem value="USER">USER</MenuItem>
+                      <MenuItem value="ADMIN">ADMIN</MenuItem>
                     </Select>
                   </FormControl>
                 </TableCell>
@@ -165,7 +194,11 @@ const AdminDashboard = () => {
           style={styles.adminButton}
           variant="contained"
           color="secondary"
-          onClick={() => navigate("/dashboard")}
+          onClick={ () => try {
+      navigate('/dashboard');
+    } catch (err) {
+      console.error(err);
+    }}
         >
           Your Profile
         </Button>
@@ -178,6 +211,7 @@ const AdminDashboard = () => {
           style={styles.snackbar}
         />
       </Paper>
+
     </Container>
   );
 };
