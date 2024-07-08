@@ -1,4 +1,4 @@
-const { gql } = require("graphql-tag");
+const { gql } = require("apollo-server");
 
 module.exports = gql`
   type User {
@@ -23,8 +23,6 @@ module.exports = gql`
   }
 
   input UpdateUserDetailsInput {
-    id: ID!
-    username: String
     email: String
     role: String
   }
