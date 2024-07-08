@@ -1,5 +1,6 @@
 const User = require("../../models/User");
-const { ApolloError, AuthenticationError } = require("apollo-server");
+const { AuthenticationError } = require("@apollo/server");
+const { GraphQLError } = require('graphql');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/auth"); // Path to auth.js
@@ -16,7 +17,7 @@ module.exports = {
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
-          throw new ApolloError(
+          throw new GraphQLError(
             "User already exists with this email: " + email
           );
         }
@@ -46,7 +47,7 @@ module.exports = {
           password: null, // Ensure sensitive data like password is not returned
         };
       } catch (error) {
-        throw new ApolloError(`Failed to register user: ${error.message}`);
+        throw new GraphQLError(`Failed to register user: ${error.message}`);
       }
     },
 
@@ -55,7 +56,7 @@ module.exports = {
         const user = await User.findOne({ email });
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
-          throw new ApolloError(
+          throw new GraphQLError(
             "Incorrect Email or Password",
             "INVALID_CREDENTIALS"
           );
@@ -76,7 +77,7 @@ module.exports = {
           password: null, // Ensure sensitive data like password is not returned
         };
       } catch (error) {
-        throw new ApolloError(`Failed to login user: ${error.message}`);
+        throw new GraphQLError(`Failed to login user: ${error.message}`);
       }
     },
 
@@ -93,7 +94,7 @@ module.exports = {
 
         return "Logged out successfully";
       } catch (error) {
-        throw new ApolloError(`Failed to logout user: ${error.message}`);
+        throw new GraphQLError(`Failed to logout user: ${error.message}`);
       }
     },
 
@@ -106,11 +107,11 @@ module.exports = {
           { new: true }
         );
         if (!user) {
-          throw new ApolloError("User not found");
+          throw new GraphQLError("User not found");
         }
         return user;
       } catch (error) {
-        throw new ApolloError(
+        throw new GraphQLError(
           `Failed to update user details: ${error.message}`
         );
       }
@@ -124,11 +125,11 @@ module.exports = {
           { new: true }
         );
         if (!user) {
-          throw new ApolloError("User not found");
+          throw new GraphQLError("User not found");
         }
         return user;
       } catch (error) {
-        throw new ApolloError(`Failed to update user role: ${error.message}`);
+        throw new GraphQLError(`Failed to update user role: ${error.message}`);
       }
     },
   },
@@ -138,11 +139,11 @@ module.exports = {
       try {
         const user = await User.findById(id);
         if (!user) {
-          throw new ApolloError("User not found");
+          throw new GraphQLError("User not found");
         }
         return user;
       } catch (error) {
-        throw new ApolloError(`Failed to fetch user: ${error.message}`);
+        throw new GraphQLError(`Failed to fetch user: ${error.message}`);
       }
     },
 
@@ -150,11 +151,11 @@ module.exports = {
       try {
         const user = await User.findOne({ token });
         if (!user) {
-          throw new ApolloError("User not found");
+          throw new GraphQLError("User not found");
         }
         return user;
       } catch (error) {
-        throw new ApolloError(`Failed to fetch user profile: ${error.message}`);
+        throw new GraphQLError(`Failed to fetch user profile: ${error.message}`);
       }
     },
 
@@ -163,7 +164,7 @@ module.exports = {
         const users = await User.find();
         return users;
       } catch (error) {
-        throw new ApolloError(`Failed to fetch all users: ${error.message}`);
+        throw new GraphQLError(`Failed to fetch all users: ${error.message}`);
       }
     },
   },

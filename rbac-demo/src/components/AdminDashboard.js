@@ -34,7 +34,7 @@ const AdminDashboard = () => {
   // });
   useEffect(() => {
     // console.log(localStorage.getItem('role'))
-    if (localStorage.getItem('role') !== "ADMIN") {
+    if (localStorage.getItem('role') !== "ADMIN" && localStorage.getItem('role') !== "SUPER_ADMIN") {
       navigate('/dashboard')
     }
     // console.log(userRole)
@@ -77,9 +77,17 @@ const AdminDashboard = () => {
   if (error) return <Typography>Error: {error.message}</Typography>;
 
 
+  const handleButtonClick = () => {
+    try {
+      navigate('/dashboard');
+    } catch (err) {
+      console.error(err);
+    }
+  }
   const handleLogout = () => {
     try {
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       navigate("/login");
     } catch (error) {
       console.error("Error logging out:", error);
@@ -150,9 +158,7 @@ const AdminDashboard = () => {
         // style={styles.logoutButton}
         variant="contained"
         color="primary"
-        onClick={() => {
-          navigate('/dashboard');
-        }}
+        onClick={handleButtonClick}
       >
         Dashboard
       </Button>

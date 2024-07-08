@@ -32,7 +32,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   // Query to fetch user profile
-  const {token = localStorage.getItem('token')} = useParams();
+  const { token = localStorage.getItem('token') } = useParams();
   const { loading, error, data } = useQuery(GET_USER_PROFILE, {
     variables: {
       token
@@ -40,6 +40,14 @@ const Dashboard = () => {
     fetchPolicy: "network-only", // Ensure latest data is fetched
   });
 
+
+  const handleButtonClick = () => {
+    try{
+      navigate('/admin');
+    }catch(e){
+      console.error(e);
+    }
+  }
 
   // Logout
   const handleLogout = () => {
@@ -77,43 +85,41 @@ const Dashboard = () => {
 
   return (
     <>
-    <Container style={styles.root} component="main" maxWidth="md">
-      <Paper style={styles.paper} elevation={3}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Welcome to your Dashboard
-        </Typography>
-        <Typography variant="h6" gutterBottom>
-          Username: {data.getUserProfile.username}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Email: {data.getUserProfile.email}
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Role: {data.getUserProfile.role}
-        </Typography>
-        {localStorage.getItem('role') === "ADMIN" ? (
-        <Button
-          style={styles.logoutButton}
-          variant="contained"
-          color="primary"
-          onClick={ () => {
-            navigate('/admin');
-          }}
-        >
-          Admin Page
-        </Button>
-        ) : null }
-        <Button
-          style={styles.logoutButton}
-          variant="contained"
-          color="primary"
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
-      </Paper>
-    </Container>
-    
+      <Container style={styles.root} component="main" maxWidth="md">
+        <Paper style={styles.paper} elevation={3}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Welcome to your Dashboard
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Username: {data.getUserProfile.username}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Email: {data.getUserProfile.email}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Role: {data.getUserProfile.role}
+          </Typography>
+          {localStorage.getItem('role') === "ADMIN" || localStorage.getItem('role') === 'SUPER_ADMIN' ? (
+            <Button
+              style={styles.logoutButton}
+              variant="contained"
+              color="primary"
+              onClick={handleButtonClick}
+            >
+              Admin Page
+            </Button>
+          ) : null}
+          <Button
+            style={styles.logoutButton}
+            variant="contained"
+            color="primary"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </Paper>
+      </Container>
+
     </>
   );
 };
