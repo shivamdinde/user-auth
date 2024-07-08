@@ -58,10 +58,10 @@ const Login = () => {
       localStorage.setItem("token", data.loginUser.token);
 
       // Redirect based on role
-      if (role === "admin") {
-        navigate("/admin-dashboard");
+      if (role === "admin" || role === "user") {
+        navigate("/dashboard");
       } else {
-        navigate("/user-dashboard");
+        navigate("/login");
       }
     } catch (err) {
       console.error("Error logging in:", err.message);

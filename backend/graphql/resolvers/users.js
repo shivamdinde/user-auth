@@ -98,13 +98,14 @@ module.exports = {
     },
 
     async updateUserDetails(_, { updatedDetails }) {
-      const { id, username, email, role } = updatedDetails;
+      const { email, role } = updatedDetails;
       try {
-        const user = await User.findByIdAndUpdate(
-          id,
-          { username, email, role },
+        const user = await User.findOneAndUpdate(
+          { email },
+          { role },
           { new: true }
         );
+
         if (!user) {
           throw new ApolloError("User not found");
         }
@@ -116,21 +117,21 @@ module.exports = {
       }
     },
 
-    async updateUserRole(_, { userId, newRole }) {
-      try {
-        const user = await User.findByIdAndUpdate(
-          userId,
-          { role: newRole },
-          { new: true }
-        );
-        if (!user) {
-          throw new ApolloError("User not found");
-        }
-        return user;
-      } catch (error) {
-        throw new ApolloError(`Failed to update user role: ${error.message}`);
-      }
-    },
+    // async updateUserRole(_, { userId, newRole }) {
+    //   try {
+    //     const user = await User.findByIdAndUpdate(
+    //       userId,
+    //       { role: newRole },
+    //       { new: true }
+    //     );
+    //     if (!user) {
+    //       throw new ApolloError("User not found");
+    //     }
+    //     return user;
+    //   } catch (error) {
+    //     throw new ApolloError(`Failed to update user role: ${error.message}`);
+    //   }
+    // },
   },
 
   Query: {
@@ -148,7 +149,7 @@ module.exports = {
 
     async getUserProfile(_, { token }) {
       try {
-        const user = await User.findOne({ token });
+        const user = await User.findOne({ token }).exec();
         if (!user) {
           throw new ApolloError("User not found");
         }

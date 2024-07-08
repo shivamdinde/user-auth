@@ -11,6 +11,9 @@ function App() {
   const PrivateRoute = ({ element, isLoggedIn }) => {
     return isLoggedIn ? element : <Navigate to="/login" />;
   };
+  const AdminRoute = ({ element, isLoggedIn, role }) => {
+    return isLoggedIn && role === "admin" ? element : <Navigate to="/" />;
+  };
 
   return (
     <div>
@@ -30,9 +33,10 @@ function App() {
         <Route
           path="/admin"
           element={
-            <PrivateRoute
+            <AdminRoute
               element={<AdminDashboard />}
               isLoggedIn={isLoggedIn}
+              role="admin"
             />
           }
         />

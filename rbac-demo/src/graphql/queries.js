@@ -1,10 +1,14 @@
 import { gql } from "@apollo/client";
 
 export const GET_USER_PROFILE = gql`
-  query GetUserProfile {
-    getUserProfile {
+  query GetUserProfile($token: String) {
+    getUserProfile(token: $token) {
+      id
       username
       email
+      password
+      role
+      token
     }
   }
 `;

@@ -24,12 +24,14 @@ export const LOGIN_USER = gql`
   }
 `;
 export const UPDATE_USER_DETAILS = gql`
-  mutation UpdateUserDetails($updatedDetails: UpdatedUserDetailsInput) {
+  mutation UpdateUserDetails($updatedDetails: UpdateUserDetailsInput!) {
     updateUserDetails(updatedDetails: $updatedDetails) {
       id
       username
       email
+      password
       role
+      token
     }
   }
 `;

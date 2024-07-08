@@ -23,8 +23,6 @@ module.exports = gql`
   }
 
   input UpdateUserDetailsInput {
-    id: ID!
-    username: String
     email: String
     role: String
   }
