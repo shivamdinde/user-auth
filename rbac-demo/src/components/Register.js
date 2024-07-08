@@ -123,7 +123,7 @@ const Register = () => {
         <form style={formStyle} onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
-            // margin="normal"
+            margin="normal"
             required
             fullWidth
             id="username"
@@ -135,7 +135,7 @@ const Register = () => {
           />
           <TextField
             variant="outlined"
-            // margin="normal"
+            margin="normal"
             required
             fullWidth
             id="email"
@@ -148,7 +148,7 @@ const Register = () => {
           {inputErrors.email && <Typography color="error">{inputErrors.email}</Typography>}
           <TextField
             variant="outlined"
-            // margin="normal"
+            margin="normal"
             required
             fullWidth
             name="password"
@@ -163,7 +163,7 @@ const Register = () => {
           {inputErrors.password && <Typography color="error">{inputErrors.password}</Typography>}
           <Select
             variant="outlined"
-            // margin="normal"
+            margin="normal"
             required
             fullWidth
             id="role"

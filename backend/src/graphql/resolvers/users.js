@@ -58,7 +58,6 @@ module.exports = {
         if (!user || !(await bcrypt.compare(password, user.password))) {
           throw new GraphQLError(
             "Incorrect Email or Password",
-            "INVALID_CREDENTIALS"
           );
         }
 
