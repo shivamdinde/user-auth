@@ -57,7 +57,6 @@ module.exports = {
         if (!user || !(await bcrypt.compare(password, user.password))) {
           throw new ApolloError(
             "Incorrect Email or Password",
-            "INVALID_CREDENTIALS"
           );
         }
 

@@ -4,9 +4,8 @@ const mongoose = require("mongoose");
 const typeDefs = require("./graphql/typeDefs");
 const resolvers = require("./graphql/resolvers");
 
-const MONGODB_URI =
-  "mongodb+srv://shivamdinde:shivamBigDnif123@cluster0.hdg1lza.mongodb.net/UserAuth?retryWrites=true&w=majority&appName=Cluster0";
-// "mongodb+srv://shivamdinde:shivamBigDnif123@cluster0.hdg1lza.mongodb.net/UserAuth?appName=Cluster0";
+MONGODB_URI = 'mongodb+srv://purusotammishrasm:Cluster0@cluster0.dmfuytd.mongodb.net/User_Auth?retryWrites=true&w=majority&appName=Cluster0'
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,

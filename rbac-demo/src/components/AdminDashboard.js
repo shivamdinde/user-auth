@@ -3,11 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 
 import { UPDATE_USER_DETAILS } from "../graphql/mutations";
 import { GET_ALL_USERS } from "../graphql/queries";
-// =======
-import { UPDATE_USER_DETAILS } from "../graphql/mutations";
-import { GET_ALL_USERS } from "../graphql/queries";
 import { useNavigate } from "react-router-dom";
-// >>>>>>> main
 import {
   Container,
   Typography,
@@ -63,14 +59,13 @@ const styles = {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-<
-  useEffect(() => {
-    // console.log(localStorage.getItem('role'))
-    if (localStorage.getItem('role') !== "ADMIN" && localStorage.getItem('role') !== "SUPER_ADMIN") {
-      navigate('/dashboard')
-    }
-    // console.log(userRole)
-  });
+    useEffect(() => {
+      // console.log(localStorage.getItem('role'))
+      if (localStorage.getItem('role') !== "ADMIN" && localStorage.getItem('role') !== "SUPER_ADMIN") {
+        navigate('/dashboard')
+      }
+      // console.log(userRole)
+    });
   const [selectedRole, setSelectedRole] = useState("");
 
   const [selectedRoles, setSelectedRoles] = useState({});
@@ -106,14 +101,14 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    try {
-      localStorage.removeItem("token");
-      navigate("/login");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+  // const handleLogout = () => {
+  //   try {
+  //     localStorage.removeItem("token");
+  //     navigate("/login");
+  //   } catch (error) {
+  //     console.error("Error logging out:", error);
+  //   }
+  // };
 
   if (loading) return <CircularProgress />;
   if (error) return <Typography>Error: {error.message}</Typography>;
@@ -135,7 +130,7 @@ const AdminDashboard = () => {
       <Typography variant="h4" gutterBottom>
         Admin Dashboard
       </Typography>
-      <Paper>
+      <Paper style={styles.paper} elevation={3}>
         <Table>
           <TableHead>
             <TableRow>
@@ -147,38 +142,38 @@ const AdminDashboard = () => {
           </TableHead>
           <TableBody>
             {data.getAllUsers.map((user) => (
-
-             (user.role !== "SUPER_ADMIN") ? (
-              <TableRow key={user.id}>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <FormControl style={styles.selectControl}>
-                    <Select
-                      labelId={`role-label-${user.id}`}
-                      id={`role-select-${user.id}`}
-                      value={selectedRoles[user.id] || user.role}
-                      onChange={(e) =>
-                        handleRoleChange(user.id, e.target.value)
-                      }
-                      variant="standard"
+              (user.role !== "SUPER_ADMIN") ? (
+                <TableRow key={user.id}>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <FormControl style={styles.selectControl}>
+                      <Select
+                        labelId={`role-label-${user.id}`}
+                        id={`role-select-${user.id}`}
+                        value={selectedRoles[user.id] || user.role}
+                        onChange={(e) =>
+                          handleRoleChange(user.id, e.target.value)
+                        }
+                        variant="standard"
+                      >
+                        <MenuItem value="USER">USER</MenuItem>
+                        <MenuItem value="ADMIN">ADMIN</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      style={styles.button}
+                      onClick={() => handleDetailsUpdate(user)}
                     >
-                      <MenuItem value="USER">USER</MenuItem>
-                      <MenuItem value="ADMIN">ADMIN</MenuItem>
-                    </Select>
-                  </FormControl>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={styles.button}
-                    onClick={() => handleDetailsUpdate(user)}
-                  >
-                    Update
-                  </Button>
-                </TableCell>
-              </TableRow>
+                      Update
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ) : null
             ))}
           </TableBody>
         </Table>
@@ -194,11 +189,13 @@ const AdminDashboard = () => {
           style={styles.adminButton}
           variant="contained"
           color="secondary"
-          onClick={ () => try {
-      navigate('/dashboard');
-    } catch (err) {
-      console.error(err);
-    }}
+          onClick={() => {
+            try {
+              navigate('/dashboard');
+            } catch (err) {
+              console.error(err);
+            }
+          }}
         >
           Your Profile
         </Button>

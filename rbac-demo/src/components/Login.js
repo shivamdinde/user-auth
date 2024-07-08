@@ -119,7 +119,7 @@ const Login = () => {
         <form style={formStyle} onSubmit={handleSubmit} >
           <TextField
             variant="outlined"
-            // margin="normal"
+            margin="normal"
             required
             fullWidth
             id="email"
@@ -133,7 +133,7 @@ const Login = () => {
           {inputErrors.email && <Typography color="error">{inputErrors.email}</Typography> }
           <TextField
             variant="outlined"
-            // margin="normal"
+            margin="normal"
             required
             fullWidth
             name="password"
