@@ -74,11 +74,7 @@ const Login = () => {
 
       navigate('/dashboard');
       // Redirect based on role
-      // if (role === "ADMIN") {
-      //   navigate("/admin");
-      // } else {
-      //   navigate("/dashboard");
-      // }
+
     } catch (err) {
       console.error("Error logging in:", err.message);
     }
