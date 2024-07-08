@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../graphql/mutations";
 import { useNavigate, Link } from "react-router-dom";
@@ -40,6 +40,13 @@ const Login = () => {
     password: "",
   });
 
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/dashboard')
+    }
+  });
+
   const [loginUser, { loading, error }] = useMutation(LOGIN_USER);
 
   const handleSubmit = async (e) => {
@@ -54,15 +61,17 @@ const Login = () => {
         },
       });
 
-      const role = data.loginUser.role; // Assuming role is returned from server
-      localStorage.setItem("token", data.loginUser.token);
+      // const role = data.loginUser.role; // Assuming role is returned from server
+      localStorage.setItem('role', data.loginUser.role);
+      localStorage.setItem('token', data.loginUser.token);
 
+      navigate('/dashboard');
       // Redirect based on role
-      if (role === "admin") {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/user-dashboard");
-      }
+      // if (role === "ADMIN") {
+      //   navigate("/admin");
+      // } else {
+      //   navigate("/dashboard");
+      // }
     } catch (err) {
       console.error("Error logging in:", err.message);
     }
@@ -79,7 +88,7 @@ const Login = () => {
         <form style={formStyle} onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
-            margin="normal"
+            // margin="normal"
             required
             fullWidth
             id="email"
@@ -92,7 +101,7 @@ const Login = () => {
           />
           <TextField
             variant="outlined"
-            margin="normal"
+            // margin="normal"
             required
             fullWidth
             name="password"

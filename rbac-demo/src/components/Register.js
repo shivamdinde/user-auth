@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { REGISTER_USER } from "../graphql/mutations";
 import {
@@ -35,11 +36,19 @@ const registerLinkStyle = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/dashboard')
+    }
+  });
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    role: "user", // Default role selection
+    role: "USER", // Default role selection
   });
 
   const [registerUser, { loading, error, data }] = useMutation(REGISTER_USER);
@@ -47,7 +56,7 @@ const Register = () => {
   // const handleSubmit = async (e) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting form data:", formData);
+    // console.log("Submitting form data:", formData);
     try {
       const response = await registerUser({
         variables: {
@@ -59,7 +68,8 @@ const Register = () => {
           },
         },
       });
-      console.log("Registration response:", response);
+      navigate('/login')
+      // console.log("Registration response:", response);
     } catch (err) {
       console.error("Error registering user:", err.message);
     }
@@ -78,7 +88,7 @@ const Register = () => {
         <form style={formStyle} onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
-            margin="normal"
+            // margin="normal"
             required
             fullWidth
             id="username"
@@ -86,11 +96,12 @@ const Register = () => {
             name="username"
             autoFocus
             value={formData.username}
+            // pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
             onChange={handleChange}
           />
           <TextField
             variant="outlined"
-            margin="normal"
+            // margin="normal"
             required
             fullWidth
             id="email"
@@ -102,7 +113,7 @@ const Register = () => {
           />
           <TextField
             variant="outlined"
-            margin="normal"
+            // margin="normal"
             required
             fullWidth
             name="password"
@@ -110,12 +121,13 @@ const Register = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
             value={formData.password}
             onChange={handleChange}
           />
           <Select
             variant="outlined"
-            margin="normal"
+            // margin="normal"
             required
             fullWidth
             id="role"
@@ -124,8 +136,8 @@ const Register = () => {
             value={formData.role}
             onChange={handleChange}
           >
-            <MenuItem value="user">User</MenuItem>
-            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="USER">USER</MenuItem>
+            <MenuItem value="ADMIN">ADMIN</MenuItem>
           </Select>
           <Button
             type="submit"
